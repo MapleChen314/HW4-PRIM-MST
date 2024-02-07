@@ -1,4 +1,4 @@
 pytest
 numpy
 scipy
-heapq
+heapq_max
