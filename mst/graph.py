@@ -51,6 +51,7 @@ class Graph:
         pi[s]=0
         pred[s]=None
         S.add(s)
+        # Initialize with information about the first node and its neighbors
         for xi in range(1,self.n_nodes):
             if xi in [i for i,x in enumerate((self.adj_mat[s])) if x != 0]:
                 pi[xi]=self.adj_mat[s][xi]
@@ -59,23 +60,22 @@ class Graph:
                 pi[xi]=np.inf
                 pred[xi]=None
         pq=[]
+        # Put all nodes and their known values into a heap
         for xi in range(1,self.n_nodes):
-            heapq.heappush(pq,[pi[xi],xi]) #(path to S, node label)
-            #heapq.heappush(pq,(xi,pi[xi]))
-        #print(pq)
-        # print(self.adj_mat)
+            heapq.heappush(pq,[pi[xi],xi])
         while (pq and len(S)<self.n_nodes):
             u=heapq.heappop(pq)
-            #print(u)
+            # Get the next node with the shortest path into S
             u_edge=u[0]
             u_name=u[1]
             if u_name in S:
                 continue
             S.add(u[1])
-            #print(f"Pred is {pred[u_name]} and u is {u_name}")
+            #Build the symmetric matrix mst
             self.mst[pred[u_name],u_name]=u_edge
             self.mst[u_name,pred[u_name]]=u_edge
             vs=[(y,x) for (x,y) in enumerate(self.adj_mat[u_name]) if y!=0] #edge value, node label
+            # Update values for all of u's neighbors
             for v in vs:
                 if v[1] not in S:
                     if v[0] < pi[v[1]]:
