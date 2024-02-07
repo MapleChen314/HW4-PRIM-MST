@@ -34,7 +34,9 @@ def check_mst(adj_mat: np.ndarray,
         for j in range(i+1):
             total += mst[i, j]
     assert approx_equal(total, expected_weight), 'Proposed MST has incorrect expected weight'
-
+    
+    n_edges=np.count_nonzero(mst)/2
+    assert int(n_edges) == mst.shape[0]-1, "Proposed MST has incorrect number of edges"
 
 def test_mst_small():
     """
@@ -71,4 +73,7 @@ def test_mst_student():
     TODO: Write at least one unit test for MST construction.
     
     """
-    pass
+    file_path = './data/small.csv'
+    g = Graph(file_path)
+    g.construct_mst()
+    assert g.mst[1][2]==1
